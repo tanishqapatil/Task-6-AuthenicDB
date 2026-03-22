@@ -1,0 +1,1706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes</title>
+    <style>
+        :root {
+            --bg: #fafafa;
+            --surface: #ffffff;
+            --text: #1a1a1a;
+            --text-secondary: #666666;
+            --text-tertiary: #999999;
+            --border: #e5e5e5;
+            --border-light: #f0f0f0;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --danger: #dc2626;
+            --radius: 8px;
+            --radius-lg: 12px;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .auth-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1.5rem;
+        }
+
+        .auth-card {
+            background: var(--surface);
+            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            max-width: 380px;
+            width: 100%;
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.375rem;
+            letter-spacing: -0.02em;
+        }
+
+        .auth-header p {
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.875rem;
+        }
+
+        .auth-form input {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 0.9375rem;
+            font-family: inherit;
+            transition: border-color 0.15s ease;
+            background: var(--surface);
+        }
+
+        .auth-form input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .auth-form input::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .auth-form button {
+            padding: 0.75rem 1rem;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 0.9375rem;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.15s ease;
+            margin-top: 0.5rem;
+        }
+
+        .auth-form button:hover {
+            background: var(--accent-hover);
+        }
+
+        .auth-switch {
+            text-align: center;
+            margin-top: 1.25rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .auth-switch a {
+            color: var(--accent);
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .auth-switch a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            background: #fef2f2;
+            color: var(--danger);
+            padding: 0.625rem 0.875rem;
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            display: none;
+            border: 1px solid #fecaca;
+        }
+
+        .app-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .app-header {
+            background: var(--surface);
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .app-header h1 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: -0.01em;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .user-name {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            font-family: inherit;
+            transition: all 0.15s ease;
+            background: var(--surface);
+            color: var(--text);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+
+        .btn:hover {
+            background: var(--bg);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-ghost {
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            padding: 0.375rem 0.625rem;
+        }
+
+        .btn-ghost:hover {
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .btn-sm {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.8125rem;
+        }
+
+        .app-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 240px;
+            background: var(--surface);
+            padding: 1.25rem;
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .sidebar-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-section h3 {
+            font-size: 0.6875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-tertiary);
+            font-weight: 600;
+            margin-bottom: 0.625rem;
+            padding: 0 0.25rem;
+        }
+
+        .folder-item, .tag-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.625rem;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            transition: background 0.1s ease;
+            margin-bottom: 0.125rem;
+        }
+
+        .folder-item:hover, .tag-item:hover {
+            background: var(--bg);
+        }
+
+        .folder-item.active, .tag-item.active {
+            background: var(--bg);
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .folder-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .add-folder-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.625rem;
+            border: none;
+            border-radius: var(--radius);
+            background: transparent;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-family: inherit;
+            width: 100%;
+            transition: all 0.1s ease;
+        }
+
+        .add-folder-btn:hover {
+            background: var(--bg);
+            color: var(--text-secondary);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .main-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+            gap: 1rem;
+        }
+
+        .search-bar {
+            position: relative;
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 0.875rem;
+            font-family: inherit;
+            background: var(--surface);
+            transition: border-color 0.15s ease;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .search-bar input::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .note-card {
+            background: var(--surface);
+            padding: 1.25rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: flex;
+            flex-direction: column;
+            min-height: 160px;
+        }
+
+        .note-card:hover {
+            border-color: var(--text-tertiary);
+        }
+
+        .note-card.pinned {
+            border-color: var(--accent);
+        }
+
+        .note-card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .note-card-title {
+            font-weight: 500;
+            font-size: 0.9375rem;
+            color: var(--text);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .pin-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 0.875rem;
+            opacity: 0.4;
+            transition: opacity 0.15s;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .pin-btn:hover, .pin-btn.active {
+            opacity: 1;
+        }
+
+        .note-card-content {
+            flex: 1;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            line-height: 1.5;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        .note-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 0.875rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border-light);
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+        }
+
+        .note-tags {
+            display: flex;
+            gap: 0.375rem;
+            flex-wrap: wrap;
+        }
+
+        .tag-badge {
+            padding: 0.125rem 0.375rem;
+            background: var(--bg);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            color: var(--text-secondary);
+        }
+
+        .note-actions button {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 0.875rem;
+            opacity: 0.4;
+            transition: opacity 0.15s;
+            padding: 0;
+        }
+
+        .note-actions button:hover {
+            opacity: 0.8;
+        }
+
+        .note-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .note-modal-overlay.active {
+            display: flex;
+        }
+
+        .note-modal {
+            background: var(--surface);
+            width: 94%;
+            max-width: 800px;
+            height: 90vh;
+            max-height: 600px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .note-modal-header {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .note-modal-header h2 {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .note-modal-body {
+            flex: 1;
+            padding: 1.25rem;
+            overflow-y: auto;
+            display: flex;
+            gap: 1.25rem;
+        }
+
+        .note-editor {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            min-width: 0;
+        }
+
+        .note-editor-title {
+            width: 100%;
+            padding: 0.5rem 0;
+            border: none;
+            border-bottom: 1px solid var(--border-light);
+            font-size: 1.125rem;
+            font-weight: 500;
+            font-family: inherit;
+            background: transparent;
+        }
+
+        .note-editor-title:focus {
+            outline: none;
+            border-bottom-color: var(--border);
+        }
+
+        .note-editor-title::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .note-editor-toolbar {
+            display: flex;
+            gap: 0.25rem;
+            padding: 0.375rem 0;
+        }
+
+        .toolbar-btn {
+            padding: 0.25rem 0.5rem;
+            background: transparent;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8125rem;
+            font-family: inherit;
+            transition: background 0.1s ease;
+            color: var(--text-secondary);
+        }
+
+        .toolbar-btn:hover {
+            background: var(--bg);
+        }
+
+        .textarea-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .note-editor-content {
+            width: 100%;
+            flex: 1;
+            padding: 0;
+            border: none;
+            font-size: 0.9375rem;
+            line-height: 1.6;
+            resize: none;
+            font-family: inherit;
+            background: transparent;
+            color: var(--text);
+        }
+
+        .note-editor-content:focus {
+            outline: none;
+        }
+
+        .note-editor-content::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .note-sidebar {
+            width: 200px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            flex-shrink: 0;
+        }
+
+        .note-sidebar-section {
+            padding: 0.75rem;
+            background: var(--bg);
+            border-radius: var(--radius);
+        }
+
+        .note-sidebar-section h4 {
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .folder-select, .tags-input {
+            width: 100%;
+            padding: 0.375rem 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.8125rem;
+            font-family: inherit;
+            background: var(--surface);
+        }
+
+        .folder-select:focus, .tags-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.375rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tag-chip {
+            padding: 0.125rem 0.5rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .tag-chip button {
+            background: none;
+            border: none;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            font-size: 1rem;
+            line-height: 1;
+            padding: 0;
+        }
+
+        .add-tag-btn {
+            padding: 0.25rem 0.5rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-family: inherit;
+            margin-top: 0.375rem;
+        }
+
+        .character-count {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            text-align: right;
+            padding: 0.5rem 0;
+        }
+
+        .auto-save-indicator {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            display: none;
+        }
+
+        .auto-save-indicator.active {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .note-modal-footer {
+            padding: 0.75rem 1.25rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: var(--surface);
+            border-radius: var(--radius);
+            border: 1px dashed var(--border);
+            grid-column: 1 / -1;
+        }
+
+        .empty-state .icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 0.25rem;
+        }
+
+        .empty-state p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            background: var(--text);
+            color: var(--surface);
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius);
+            font-size: 0.875rem;
+            transform: translateY(100px);
+            transition: transform 0.2s ease;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+        }
+
+        .toast.error {
+            background: var(--danger);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .close-btn {
+            background: transparent;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            color: var(--text-tertiary);
+            padding: 0;
+            line-height: 1;
+        }
+
+        .close-btn:hover {
+            color: var(--text);
+        }
+
+        @media (max-width: 768px) {
+            .app-header {
+                flex-direction: column;
+                gap: 0.75rem;
+                align-items: flex-start;
+            }
+
+            .user-info {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .app-content {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                padding: 1rem;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .notes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .note-modal-body {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .note-sidebar {
+                width: 100%;
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .note-sidebar-section {
+                flex: 1;
+                min-width: 140px;
+            }
+
+            .auth-card {
+                padding: 1.75rem;
+            }
+
+            .main-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-bar {
+                max-width: none;
+            }
+        }
+        .color-picker-wrapper {
+            position: relative;
+            width: 40px;
+            height: 36px;
+            cursor: pointer;
+        }
+
+        .color-picker-wrapper input[type="color"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .color-preview {
+            width: 40px;
+            height: 36px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div id="authScreen" class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>Notes</h1>
+                <p>Sign in to continue</p>
+            </div>
+            <div id="authError" class="error-message"></div>
+
+            <div id="loginForm" class="auth-form">
+                <input type="email" id="loginEmail" placeholder="Email" required>
+                <input type="password" id="loginPassword" placeholder="Password" required>
+                <button onclick="handleLogin()">Sign In</button>
+                <p class="auth-switch">
+                    No account? <a onclick="showRegister()">Create one</a>
+                </p>
+            </div>
+
+            <div id="registerForm" class="auth-form hidden">
+                <input type="text" id="registerName" placeholder="Name" required>
+                <input type="email" id="registerEmail" placeholder="Email" required>
+                <input type="password" id="registerPassword" placeholder="Password" required>
+                <button onclick="handleRegister()">Create Account</button>
+                <p class="auth-switch">
+                    Have an account? <a onclick="showLogin()">Sign in</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="appScreen" class="app-container hidden">
+        <header class="app-header">
+            <h1>Notes</h1>
+            <div class="user-info">
+                <span class="user-name" id="userName">User</span>
+                <button class="btn btn-sm" onclick="exportNotes()">Export</button>
+                <button class="btn btn-ghost btn-sm" onclick="handleLogout()">Sign out</button>
+            </div>
+        </header>
+
+        <div class="app-content">
+            <aside class="sidebar">
+                <div class="sidebar-section">
+                    <h3>Folders</h3>
+                    <div id="folderList"></div>
+                    <button class="add-folder-btn" onclick="showAddFolder()">
+                        <span>+</span> New Folder
+                    </button>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>Tags</h3>
+                    <div id="tagList"></div>
+                </div>
+            </aside>
+
+            <main class="main-content">
+                <div class="main-header">
+                    <div class="search-bar">
+                        <input type="text" id="searchInput" placeholder="Search notes..." oninput="handleSearch()">
+                    </div>
+                    <button class="btn btn-primary btn-sm" onclick="openNoteModal()">+ New Note</button>
+                </div>
+
+                <div id="notesGrid" class="notes-grid"></div>
+            </main>
+        </div>
+    </div>
+
+    <div id="noteModal" class="note-modal-overlay">
+        <div class="note-modal">
+            <div class="note-modal-header">
+                <h2>Edit Note</h2>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div id="autoSaveIndicator" class="auto-save-indicator">Saving...</div>
+                    <button class="close-btn" onclick="closeNoteModal()">&times;</button>
+                </div>
+            </div>
+
+            <div class="note-modal-body">
+                <div class="note-editor">
+                    <input type="text" id="noteTitle" class="note-editor-title" placeholder="Title" oninput="noteChanged = true">
+
+                    <div class="note-editor-toolbar">
+                        <button class="toolbar-btn" onclick="formatText('bold')" title="Bold"><strong>B</strong></button>
+                        <button class="toolbar-btn" onclick="formatText('italic')" title="Italic"><em>I</em></button>
+                        <button class="toolbar-btn" onclick="formatText('code')" title="Code">code</button>
+                        <button class="toolbar-btn" onclick="formatText('quote')" title="Quote">"</button>
+                        <button class="toolbar-btn" onclick="formatText('heading')" title="Heading">H</button>
+                    </div>
+
+                    <div class="textarea-wrapper">
+                        <textarea id="noteContent" class="note-editor-content" placeholder="Start writing..." oninput="handleNoteInput()"></textarea>
+                    </div>
+
+                    <div class="character-count">
+                        <span id="charCount">0</span> characters
+                    </div>
+                </div>
+
+                <div class="note-sidebar">
+                    <div class="note-sidebar-section">
+                        <h4>Folder</h4>
+                        <select id="noteFolder" class="folder-select" onchange="noteChanged = true">
+                            <option value="">None</option>
+                        </select>
+                    </div>
+
+                    <div class="note-sidebar-section">
+                        <h4>Tags</h4>
+                        <div id="noteTags" class="tags-container"></div>
+                        <input type="text" id="newTagInput" class="tags-input" placeholder="Add tag..." onkeypress="handleTagInput(event)">
+                        <button class="add-tag-btn" onclick="addTag()">Add</button>
+                    </div>
+
+                    <div class="note-sidebar-section">
+                        <h4>Options</h4>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.8125rem; color: var(--text-secondary);">
+                            <input type="checkbox" id="notePin" onchange="noteChanged = true">
+                            <span>Pin to top</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="note-modal-footer">
+                <button class="btn btn-sm" onclick="closeNoteModal()">Cancel</button>
+                <button class="btn btn-primary btn-sm" onclick="saveNote()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="folderModal" class="note-modal-overlay">
+        <div class="auth-card" style="max-width: 360px;">
+            <div class="auth-header">
+                <h1>New Folder</h1>
+            </div>
+            <div id="folderError" class="error-message"></div>
+            <div class="auth-form">
+                <input type="text" id="folderName" placeholder="Folder name" required>
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <div class="color-picker-wrapper" onclick="document.getElementById('folderColor').click()">
+                        <input type="color" id="folderColor" value="#2563eb">
+                        <div id="folderColorPreview" class="color-preview" style="background: #2563eb;"></div>
+                    </div>
+                    <span style="font-size: 0.875rem; color: var(--text-secondary);">Color</span>
+                </div>
+                <button onclick="createFolder()">Create</button>
+                <button class="btn" onclick="closeFolderModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        const state = {
+            user: null,
+            token: null,
+            notes: [],
+            folders: [],
+            tags: [],
+            currentFolder: null,
+            currentTag: null,
+            searchQuery: '',
+            editingNote: null,
+            noteTags: [],
+            noteChanged: false,
+            autoSaveTimer: null
+        };
+
+        const api = {
+            async login(email, password) {
+                const response = await fetch('/auth/login', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({email, password})
+                });
+                return response.json();
+            },
+
+            async register(name, email, password) {
+                const response = await fetch('/auth/register', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({name, email, password})
+                });
+                return response.json();
+            },
+
+            async getFolders() {
+                const response = await fetch('/api/folders', {
+                    headers: {'Authorization': `Bearer ${state.token}`}
+                });
+                const data = await response.json();
+                console.log('Folders fetched:', data);
+                return data;
+            },
+
+            async createFolder(name, color) {
+                const response = await fetch('/api/folders', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${state.token}`
+                    },
+                    body: JSON.stringify({name, color})
+                });
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to create folder');
+                }
+                return data;
+            },
+
+            async deleteFolder(id) {
+                const response = await fetch(`/api/folders/${id}`, {
+                    method: 'DELETE',
+                    headers: {'Authorization': `Bearer ${state.token}`}
+                });
+                return response.json();
+            },
+
+            async getNotes(params = {}) {
+                const queryString = new URLSearchParams(params).toString();
+                const response = await fetch(`/api/notes${queryString ? '?' + queryString : ''}`, {
+                    headers: {'Authorization': `Bearer ${state.token}`}
+                });
+                const data = await response.json();
+                console.log('Notes fetched:', data);
+                return data;
+            },
+
+            async createNote(noteData) {
+                const response = await fetch('/api/notes', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${state.token}`
+                    },
+                    body: JSON.stringify(noteData)
+                });
+                const data = await response.json();
+                console.log('Create note response:', response.status, data);
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to create note');
+                }
+                return data;
+            },
+
+            async updateNote(id, noteData) {
+                const response = await fetch(`/api/notes/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${state.token}`
+                    },
+                    body: JSON.stringify(noteData)
+                });
+                const data = await response.json();
+                console.log('Update note response:', response.status, data);
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to update note');
+                }
+                return data;
+            },
+
+            async deleteNote(id) {
+                const response = await fetch(`/api/notes/${id}`, {
+                    method: 'DELETE',
+                    headers: {'Authorization': `Bearer ${state.token}`}
+                });
+                return response.json();
+            },
+
+            async getTags() {
+                const response = await fetch('/api/tags', {
+                    headers: {'Authorization': `Bearer ${state.token}`}
+                });
+                return response.json();
+            }
+        };
+
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const user = localStorage.getItem('user');
+
+            if (token && user) {
+                state.token = JSON.parse(token);
+                state.user = JSON.parse(user);
+                showApp();
+            }
+        }
+
+        function showRegister() {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('registerForm').classList.remove('hidden');
+            document.getElementById('authError').style.display = 'none';
+        }
+
+        function showLogin() {
+            document.getElementById('registerForm').classList.add('hidden');
+            document.getElementById('loginForm').classList.remove('hidden');
+            document.getElementById('authError').style.display = 'none';
+        }
+
+        async function handleLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                const result = await api.login(email, password);
+                if (result.token) {
+                    state.token = result.token;
+                    state.user = result.user;
+                    localStorage.setItem('token', JSON.stringify(result.token));
+                    localStorage.setItem('user', JSON.stringify(result.user));
+                    showApp();
+                    showToast('Welcome back!', 'success');
+                } else {
+                    showAuthError(result.error || 'Login failed');
+                }
+            } catch (error) {
+                showAuthError('An error occurred. Please try again.');
+            }
+        }
+
+        async function handleRegister() {
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+
+            try {
+                const result = await api.register(name, email, password);
+                if (result.message) {
+                    showToast('Account created! Please sign in.', 'success');
+                    showLogin();
+                } else {
+                    showAuthError(result.error || 'Registration failed');
+                }
+            } catch (error) {
+                showAuthError('An error occurred. Please try again.');
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            state.token = null;
+            state.user = null;
+            document.getElementById('appScreen').classList.add('hidden');
+            document.getElementById('authScreen').classList.remove('hidden');
+            showToast('Signed out', 'success');
+        }
+
+        function showAuthError(message) {
+            const errorEl = document.getElementById('authError');
+            errorEl.textContent = message;
+            errorEl.style.display = 'block';
+        }
+
+        function showApp() {
+            document.getElementById('authScreen').classList.add('hidden');
+            document.getElementById('appScreen').classList.remove('hidden');
+            document.getElementById('userName').textContent = state.user.name;
+            loadAppData();
+        }
+
+        async function loadAppData() {
+            try {
+                console.log('Loading app data...');
+                const [folders, tags, notes] = await Promise.all([
+                    api.getFolders().catch(e => { console.error('Error fetching folders:', e); return []; }),
+                    api.getTags().catch(e => { console.error('Error fetching tags:', e); return []; }),
+                    api.getNotes().catch(e => { console.error('Error fetching notes:', e); return []; })
+                ]);
+
+                console.log('Data loaded:', { folders, tags, notes });
+
+                state.folders = Array.isArray(folders) ? folders : [];
+                state.tags = Array.isArray(tags) ? tags : [];
+                state.notes = Array.isArray(notes) ? notes : [];
+
+                console.log('State.folders:', state.folders);
+
+                renderFolders();
+                renderTags();
+                renderNotes();
+            } catch (error) {
+                console.error('Failed to load app data:', error);
+                state.folders = [];
+                state.tags = [];
+                state.notes = [];
+                renderFolders();
+                renderTags();
+                renderNotes();
+            }
+        }
+
+        function renderFolders() {
+            console.log('Rendering folders, current state.folders:', state.folders);
+            const container = document.getElementById('folderList');
+            const folderSelect = document.getElementById('noteFolder');
+
+            let html = `<div class="folder-item ${state.currentFolder === null ? 'active' : ''}" onclick="filterByFolder(null)">
+                <span class="folder-dot" style="background: #888;"></span>
+                All Notes
+                <span style="margin-left: auto; font-size: 0.75rem;">${state.notes?.length || 0}</span>
+            </div>`;
+
+            const folders = state.folders || [];
+            const notes = state.notes || [];
+
+            folders.forEach(folder => {
+                const noteCount = notes.filter(n => n.folder_id === folder.id).length;
+                html += `<div class="folder-item ${state.currentFolder === folder.id ? 'active' : ''}" onclick="filterByFolder(${folder.id})" style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span class="folder-dot" style="background: ${folder.color};"></span>
+                        ${escapeHtml(folder.name)}
+                    </span>
+                    <span style="font-size: 0.75rem;">${noteCount}</span>
+                </div>`;
+            });
+
+            container.innerHTML = html;
+
+            folderSelect.innerHTML = '<option value="">None</option>';
+            folders.forEach(folder => {
+                folderSelect.innerHTML += `<option value="${folder.id}">${escapeHtml(folder.name)}</option>`;
+            });
+        }
+
+        function renderTags() {
+            const container = document.getElementById('tagList');
+
+            if (state.tags.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-tertiary); font-size: 0.8125rem;">No tags yet</p>';
+                return;
+            }
+
+            let html = '';
+            state.tags.forEach(tag => {
+                html += `<div class="tag-item ${state.currentTag === tag ? 'active' : ''}" onclick="filterByTag('${escapeHtml(tag)}')">
+                    <span class="folder-dot" style="background: var(--accent);"></span>
+                    ${escapeHtml(tag)}
+                </div>`;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function renderNotes() {
+            const container = document.getElementById('notesGrid');
+
+            let filtered = [...(state.notes || [])];
+
+            if (state.currentFolder !== null) {
+                filtered = filtered.filter(n => n.folder_id === state.currentFolder);
+            }
+
+            if (state.currentTag) {
+                filtered = filtered.filter(n => n.tags && n.tags.includes(state.currentTag));
+            }
+
+            if (state.searchQuery) {
+                const query = state.searchQuery.toLowerCase();
+                filtered = filtered.filter(n =>
+                    (n.title && n.title.toLowerCase().includes(query)) ||
+                    n.content.toLowerCase().includes(query)
+                );
+            }
+
+            filtered.sort((a, b) => {
+                if (a.is_pinned && !b.is_pinned) return -1;
+                if (!a.is_pinned && b.is_pinned) return 1;
+                return new Date(b.updated_at) - new Date(a.updated_at);
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">note</div>
+                        <h3>No Notes</h3>
+                        <p>Create your first note to get started.</p>
+                        <button class="btn btn-primary btn-sm" onclick="openNoteModal()">Create Note</button>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            filtered.forEach(note => {
+                const title = note.title || 'Untitled';
+                const preview = note.content.substring(0, 120);
+                const tagsHtml = note.tags && note.tags.length > 0
+                    ? note.tags.slice(0, 2).map(t => `<span class="tag-badge">${escapeHtml(t)}</span>`).join('')
+                    : '';
+                const date = new Date(note.updated_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+                html += `
+                    <div class="note-card ${note.is_pinned ? 'pinned' : ''}" onclick="openNoteModal(${note.id})">
+                        <div class="note-card-header">
+                            <span class="note-card-title">${escapeHtml(title)}</span>
+                            <button class="pin-btn ${note.is_pinned ? 'active' : ''}" onclick="event.stopPropagation(); togglePin(${note.id})">
+                                ${note.is_pinned ? '*' : 'o'}
+                            </button>
+                        </div>
+                        <div class="note-card-content">${escapeHtml(preview)}</div>
+                        <div class="note-card-footer">
+                            <span>${date}</span>
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <div class="note-tags">${tagsHtml}</div>
+                                <button onclick="event.stopPropagation(); deleteNote(${note.id})" style="font-size: 0.75rem;">del</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function filterByFolder(folderId) {
+            state.currentFolder = folderId;
+            state.currentTag = null;
+            renderFolders();
+            renderTags();
+            renderNotes();
+        }
+
+        function filterByTag(tag) {
+            state.currentTag = tag;
+            state.currentFolder = null;
+            renderFolders();
+            renderTags();
+            renderNotes();
+        }
+
+        function handleSearch() {
+            state.searchQuery = document.getElementById('searchInput').value;
+            renderNotes();
+        }
+
+        function showAddFolder() {
+            document.getElementById('folderModal').classList.add('active');
+        }
+
+        function closeFolderModal() {
+            document.getElementById('folderModal').classList.remove('active');
+            document.getElementById('folderName').value = '';
+            document.getElementById('folderColor').value = '#2563eb';
+            document.getElementById('folderColorPreview').style.background = '#2563eb';
+            document.getElementById('folderError').style.display = 'none';
+        }
+
+        async function createFolder() {
+            const name = document.getElementById('folderName').value.trim();
+            const color = document.getElementById('folderColor').value;
+
+            console.log('Creating folder:', { name, color });
+
+            if (!name) {
+                showFolderError('Folder name is required');
+                return;
+            }
+
+            try {
+                const result = await api.createFolder(name, color);
+                console.log('Folder created:', result);
+                await loadAppData();
+                closeFolderModal();
+                showToast('Folder created', 'success');
+            } catch (error) {
+                console.error('Error creating folder:', error);
+                showFolderError(error.message || 'Failed to create folder');
+            }
+        }
+
+        function showFolderError(message) {
+            const errorEl = document.getElementById('folderError');
+            errorEl.textContent = message;
+            errorEl.style.display = 'block';
+        }
+
+        function openNoteModal(noteId = null) {
+            state.editingNote = noteId;
+            state.noteTags = [];
+            state.noteChanged = false;
+
+            if (noteId) {
+                const note = state.notes.find(n => n.id === noteId);
+                if (note) {
+                    document.getElementById('noteTitle').value = note.title || '';
+                    document.getElementById('noteContent').value = note.content;
+                    document.getElementById('noteFolder').value = note.folder_id || '';
+                    document.getElementById('notePin').checked = note.is_pinned || false;
+                    document.getElementById('charCount').textContent = note.content.length;
+                    state.noteTags = note.tags || [];
+                }
+            } else {
+                document.getElementById('noteTitle').value = '';
+                document.getElementById('noteContent').value = '';
+                document.getElementById('noteFolder').value = '';
+                document.getElementById('notePin').checked = false;
+                document.getElementById('charCount').textContent = '0';
+            }
+
+            renderNoteTags();
+            document.getElementById('noteModal').classList.add('active');
+        }
+
+        function closeNoteModal() {
+            if (state.noteChanged) {
+                if (!confirm('You have unsaved changes. Close anyway?')) {
+                    return;
+                }
+            }
+
+            document.getElementById('noteModal').classList.remove('active');
+            state.editingNote = null;
+            state.noteTags = [];
+            clearTimeout(state.autoSaveTimer);
+        }
+
+        function handleNoteInput() {
+            const content = document.getElementById('noteContent').value;
+            document.getElementById('charCount').textContent = content.length;
+            state.noteChanged = true;
+
+            clearTimeout(state.autoSaveTimer);
+            document.getElementById('autoSaveIndicator').classList.add('active');
+
+            state.autoSaveTimer = setTimeout(async () => {
+                if (state.noteChanged && state.editingNote) {
+                    await autoSave();
+                }
+                document.getElementById('autoSaveIndicator').classList.remove('active');
+            }, 3000);
+        }
+
+        async function autoSave() {
+            try {
+                await saveCurrentNote();
+                showToast('Saved', 'success');
+                state.noteChanged = false;
+            } catch (error) {
+                console.error('Auto-save failed:', error);
+            }
+        }
+
+        async function saveNote() {
+            try {
+                console.log('Saving note...');
+                await saveCurrentNote();
+                showToast('Note saved', 'success');
+                closeNoteModal();
+            } catch (error) {
+                console.error('Error saving note:', error);
+                showToast(error.message || 'Failed to save note', 'error');
+            }
+        }
+
+        async function saveCurrentNote() {
+            const noteData = {
+                title: document.getElementById('noteTitle').value.trim() || null,
+                content: document.getElementById('noteContent').value,
+                folder_id: document.getElementById('noteFolder').value || null,
+                tags: state.noteTags,
+                is_pinned: document.getElementById('notePin').checked
+            };
+
+            console.log('Saving note data:', noteData);
+
+            if (state.editingNote) {
+                console.log('Updating existing note:', state.editingNote);
+                const result = await api.updateNote(state.editingNote, noteData);
+                const index = state.notes.findIndex(n => n.id === state.editingNote);
+                if (index !== -1) {
+                    state.notes[index] = {...state.notes[index], ...noteData, updated_at: new Date().toISOString()};
+                }
+            } else {
+                console.log('Creating new note');
+                const newNote = await api.createNote(noteData);
+                state.notes.unshift(newNote);
+                state.editingNote = newNote.id;
+            }
+
+            console.log('Refreshing folders and tags...');
+
+            await Promise.all([
+                api.getTags().then(tags => { 
+                    console.log('Tags refreshed:', tags);
+                    state.tags = tags; 
+                }),
+                api.getFolders().then(folders => { 
+                    console.log('Folders refreshed:', folders);
+                    state.folders = folders; 
+                })
+            ]);
+
+            renderFolders();
+            renderTags();
+            renderNotes();
+        }
+
+        async function deleteNote(noteId) {
+            if (!confirm('Delete this note?')) return;
+
+            try {
+                await api.deleteNote(noteId);
+                state.notes = state.notes.filter(n => n.id !== noteId);
+                renderNotes();
+                renderFolders();
+                showToast('Note deleted', 'success');
+            } catch (error) {
+                showToast('Failed to delete note', 'error');
+            }
+        }
+
+        async function togglePin(noteId) {
+            const note = state.notes.find(n => n.id === noteId);
+            if (!note) return;
+
+            try {
+                const updated = await api.updateNote(noteId, {is_pinned: !note.is_pinned});
+                Object.assign(note, updated);
+                renderNotes();
+                showToast(note.is_pinned ? 'Note unpinned' : 'Note pinned', 'success');
+            } catch (error) {
+                showToast('Failed to update note', 'error');
+            }
+        }
+
+        function renderNoteTags() {
+            const container = document.getElementById('noteTags');
+            let html = '';
+
+            state.noteTags.forEach(tag => {
+                html += `<span class="tag-chip">${escapeHtml(tag)} <button onclick="removeTag('${escapeHtml(tag)}')">&times;</button></span>`;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function addTag() {
+            const input = document.getElementById('newTagInput');
+            const tag = input.value.trim().toLowerCase();
+
+            if (!tag || state.noteTags.includes(tag)) {
+                input.value = '';
+                return;
+            }
+
+            state.noteTags.push(tag);
+            renderNoteTags();
+            input.value = '';
+            state.noteChanged = true;
+        }
+
+        function handleTagInput(event) {
+            if (event.key === 'Enter') {
+                addTag();
+            }
+        }
+
+        function removeTag(tag) {
+            state.noteTags = state.noteTags.filter(t => t !== tag);
+            renderNoteTags();
+            state.noteChanged = true;
+        }
+
+        function formatText(type) {
+            const textarea = document.getElementById('noteContent');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const text = textarea.value;
+            const selected = text.substring(start, end);
+
+            let newText = '';
+            switch (type) {
+                case 'bold':
+                    newText = `**${selected || 'bold text'}**`;
+                    break;
+                case 'italic':
+                    newText = `*${selected || 'italic text'}*`;
+                    break;
+                case 'code':
+                    newText = `\`${selected || 'code'}\``;
+                    break;
+                case 'quote':
+                    newText = `> ${selected || 'quote'}`;
+                    break;
+                case 'heading':
+                    newText = `# ${selected || 'Heading'}`;
+                    break;
+            }
+
+            textarea.value = text.substring(0, start) + newText + text.substring(end);
+            textarea.focus();
+            textarea.selectionStart = textarea.selectionEnd = start + newText.length;
+            handleNoteInput();
+        }
+
+        function exportNotes() {
+            if (state.notes.length === 0) {
+                showToast('No notes to export', 'error');
+                return;
+            }
+
+            let markdown = '# Notes Export\n\n';
+            markdown += `Exported: ${new Date().toLocaleString()}\n\n---\n\n`;
+
+            state.notes.forEach(note => {
+                markdown += `## ${note.title || 'Untitled'}\n\n`;
+                markdown += `Date: ${new Date(note.updated_at).toLocaleString()}\n\n`;
+
+                if (note.tags && note.tags.length > 0) {
+                    markdown += `Tags: ${note.tags.join(', ')}\n\n`;
+                }
+
+                markdown += note.content + '\n\n---\n\n';
+            });
+
+            const blob = new Blob([markdown], {type: 'text/markdown'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `notes-${new Date().toISOString().split('T')[0]}.md`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            showToast('Notes exported', 'success');
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.toggle('error', type === 'error');
+            toast.classList.add('show');
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            document.getElementById('folderColor').addEventListener('input', (e) => {
+                document.getElementById('folderColorPreview').style.background = e.target.value;
+            });
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeNoteModal();
+                closeFolderModal();
+            }
+        });
+    </script>
+</body>
+</html>
